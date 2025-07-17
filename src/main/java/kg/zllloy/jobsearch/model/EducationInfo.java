@@ -1,13 +1,16 @@
 package kg.zllloy.jobsearch.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class EducationInfo {
-    Integer id;
-    Integer resumeId;
-    String institution;
-    String program;
-    Date startDate;
-    Date endDate;
-    String degree;
+    private Integer id;
+    private Integer resumeId;
+    private String institution;
+    private String program;
+    private Date startDate;
+    private Date endDate;
+    private String degree;
 }

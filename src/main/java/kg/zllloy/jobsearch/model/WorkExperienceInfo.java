@@ -1,10 +1,13 @@
 package kg.zllloy.jobsearch.model;
 
+import lombok.Data;
+
+@Data
 public class WorkExperienceInfo {
-    Integer id;
-    Integer resumeId;
-    Integer years;
-    String companyName;
-    String position;
-    String responsibilities;
+    private Integer id;
+    private Integer resumeId;
+    private Integer years;
+    private String companyName;
+    private String position;
+    private String responsibilities;
 }

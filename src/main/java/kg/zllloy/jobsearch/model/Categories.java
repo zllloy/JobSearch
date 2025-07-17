@@ -1,7 +1,10 @@
 package kg.zllloy.jobsearch.model;
 
+import lombok.Data;
+
+@Data
 public class Categories {
-    Integer id;
-    String name;
-    Integer parentId;
+    private Integer id;
+    private String name;
+    private Integer parentId;
 }

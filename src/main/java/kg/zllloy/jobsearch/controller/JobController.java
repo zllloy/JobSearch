@@ -2,6 +2,8 @@ package kg.zllloy.jobsearch.controller;
 
 import kg.zllloy.jobsearch.dto.JobDto;
 import kg.zllloy.jobsearch.service.JobService;
+import kg.zllloy.jobsearch.service.ResponseService;
+import kg.zllloy.jobsearch.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ import java.util.List;
 @RequestMapping("/jobs")
 public class JobController {
     private final JobService jobService;
+    private final ResponseService responseService;
+    private final ResumeService resumeService;
 
     @GetMapping
     public List<JobDto> getAllJobs() {
@@ -43,6 +47,22 @@ public class JobController {
             return ResponseEntity.noContent().build();
 
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/job/{jobId}/resume/{resumeId}")
+    public ResponseEntity<Void> respondToJob(@PathVariable int jobId,
+                                             @PathVariable int resumeId) {
+
+        if (!jobService.existsById(jobId) || !resumeService.existsById(resumeId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (responseService.existsByJobAndResume(jobId, resumeId)) {
+            return ResponseEntity.status(409).build();
+        }
+
+        responseService.createResponse(jobId, resumeId);
+        return ResponseEntity.status(201).build();
     }
 
 

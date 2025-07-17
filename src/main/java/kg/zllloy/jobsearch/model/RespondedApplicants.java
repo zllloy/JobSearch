@@ -1,10 +1,13 @@
 package kg.zllloy.jobsearch.model;
 
+import lombok.Data;
+
+@Data
 public class RespondedApplicants {
-    Integer id;
-    Integer resumeId;
-    Integer vacancyId;
-    Boolean confirmation;
+    private Integer id;
+    private Integer resumeId;
+    private Integer vacancyId;
+    private Boolean confirmation;
 }
 
 
