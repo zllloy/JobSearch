@@ -54,7 +54,8 @@ create table if not exists responded_applicants
     foreign key (vacancy_id) references vacancies (id)
 );
 insert into responded_applicants (resume_id, vacancy_id, confirmation)
-values (1, 2, false);
+values (1, 2, false),
+       (2, 2, true);
 
 create table if not exists categories
 (
@@ -66,31 +67,35 @@ insert into categories (name, parent_id)
 values ('IT', null),
        ('Development', 1),
        ('Design', 1),
-       ('Frontend', 2)
+       ('Frontend', 2);
 
 create table if not exists contact_types
 (
     id   int auto_increment primary key,
-    name varchar(45),
+    name varchar(45)
 );
+insert into contact_types (name)
 values ('email'),
        ('phone'),
        ('telegram');
 
 create table if not exists contacts_info
 (
-    id        int auto_increment primary key,
-    type_id   INT,
-    resume_id INT,
-    value     varchar(45),
+    id            int auto_increment primary key,
+    type_id       INT,
+    resume_id     INT,
+    contact_value varchar(45),
     foreign key (type_id) references contact_types (id),
     foreign key (resume_id) references resumes (id)
 );
+
+insert into contacts_info(type_id, resume_id, contact_value)
 values (1, 1, 'johndoe@example.com'),
        (2, 1, '+996 555 123 456'),
        (3, 1, '@johndoe'),
        (1, 2, 'janedoe@example.com'),
        (2, 2, '+996 777 654 321');
+
 
 create table if not exists education_info
 (
@@ -136,11 +141,11 @@ values (1, 1, '2025-07-01 09:30:00'),
 
 create table if not exists workExperienceInfo
 (
-    id           int auto_increment primary key,
-    resume_id    INT,
-    years        INT,
-    company_name varchar(45),
-    position     varchar(45),
+    id               int auto_increment primary key,
+    resume_id        INT,
+    years            INT,
+    company_name     varchar(45),
+    position         varchar(45),
     responsibilities varchar(45),
-    foreign key (resume_id) references resumes(id)
+    foreign key (resume_id) references resumes (id)
 );
