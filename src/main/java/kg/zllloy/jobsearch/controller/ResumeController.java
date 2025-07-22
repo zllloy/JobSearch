@@ -3,10 +3,9 @@ package kg.zllloy.jobsearch.controller;
 import kg.zllloy.jobsearch.dto.ApplicantDto;
 import kg.zllloy.jobsearch.dto.JobDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.dto.SummaryDto;
 import kg.zllloy.jobsearch.service.ApplicantService;
 import kg.zllloy.jobsearch.service.JobService;
-import kg.zllloy.jobsearch.service.ResumeService;
+import kg.zllloy.jobsearch.service.impl.ResumeServiceImpl;
 import kg.zllloy.jobsearch.service.SummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/resume")
 public class ResumeController {
-    private final ResumeService resumeService;
+    private final ResumeServiceImpl resumeServiceImpl;
     private final ApplicantService applicantService;
     private final SummaryService summaryService;
     private final JobService jobService;
 
     @GetMapping
     public List<JobDto> getAllResumes() {
-        return resumeService.getAllResumes();
+        return resumeServiceImpl.getAllResumes();
     }
 
     @GetMapping("/category/{id}")
     public ResponseEntity<List<ResumeDto>> getResumeByCategory(@PathVariable int id) {
-        List<ResumeDto> resumes = (List<ResumeDto>) resumeService.getResumeByCategory(id);
+        List<ResumeDto> resumes = (List<ResumeDto>) resumeServiceImpl.getResumeByCategory(id);
         if (resumes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -44,7 +43,7 @@ public class ResumeController {
             return ResponseEntity.notFound().build();
         }
 
-        resumeService.addResume(applicantId, resumeDto);
+        resumeServiceImpl.addResume(applicantId, resumeDto);
         return ResponseEntity.ok().build();
     }
 
@@ -52,21 +51,21 @@ public class ResumeController {
     public ResponseEntity<Void> editResume(@PathVariable int resumeId,
                                            @PathVariable int applicantId,
                                            @RequestBody ResumeDto resumeDto) {
-        ResumeDto existing = resumeService.getResumeById(resumeId);
+        ResumeDto existing = resumeServiceImpl.getResumeById(resumeId);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
         if (existing.getApplicantId() != applicantId) {
             return ResponseEntity.status(403).build();
         }
-        resumeService.editResume(resumeId, resumeDto);
+        resumeServiceImpl.editResume(resumeId, resumeDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{resumeId}/applicant/{applicantId}")
     public ResponseEntity<Void> deleteResume(@PathVariable int resumeId,
                                           @PathVariable int applicantId) {
-        ResumeDto existing = resumeService.getResumeById(resumeId);
+        ResumeDto existing = resumeServiceImpl.getResumeById(resumeId);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
@@ -74,7 +73,7 @@ public class ResumeController {
             return ResponseEntity.status(403).build();
         }
 
-        if(resumeService.deleteResume(resumeId))
+        if(resumeServiceImpl.deleteResume(resumeId))
             return ResponseEntity.noContent().build();
 
         return ResponseEntity.notFound().build();
@@ -84,11 +83,11 @@ public class ResumeController {
     public ResponseEntity<Void> respondToJob(@PathVariable int jobId,
                                              @PathVariable int resumeId) {
 
-        if (!jobService.existsById(jobId) || !resumeService.existsById(resumeId)) {
+        if (!jobService.existsById(jobId) || !resumeServiceImpl.existsById(resumeId)) {
             return ResponseEntity.notFound().build();
         }
 
-        resumeService.addResponse(jobId, resumeId);
+        resumeServiceImpl.addResponse(jobId, resumeId);
 
         return ResponseEntity.ok().build();
     }
