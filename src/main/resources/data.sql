@@ -32,17 +32,23 @@ values (1, 'Junior Java Developer Resume', 3, 60000.0, true, '2025-07-01', '2025
 create table if not exists vacancies
 (
     id           int auto_increment primary key,
-    employer_id  INT,
-    title        varchar(100),
-    description  varchar(255),
-    category_id  INT,
-    salary       FLOAT,
-    is_active    BOOLEAN,
-    created_date DATE
+    name         varchar(100) not null,
+    description  text         not null,
+    category_id  int          not null,
+    salary       int,
+    exp_form     varchar(50),
+    exp_to       varchar(50),
+    is_active    boolean  default true,
+    author_id    int          not null,
+    created_date datetime default current_timestamp,
+    updated_date datetime default current_timestamp on update current_timestamp
 );
-insert into vacancies (employer_id, title, description, category_id, salary, is_active, created_date)
-values (2, 'Middle Java Developer', 'Java developer with 2+ years experience', 3, 120000.0, true, '2025-07-15'),
-       (2, 'React Frontend Developer', 'Frontend developer with React and Redux', 4, 110000.0, true, '2025-07-16');
+insert into vacancies (author_id, name, description, category_id, salary, exp_form, exp_to, is_active, created_date,
+                       updated_date)
+values (2, 'Middle Java Developer', 'Java developer with 2+ years experience', 3, 120000, '2025-01-01', '2025-12-31',
+        true, '2025-07-15', '2025-07-15'),
+       (2, 'React Frontend Developer', 'Frontend developer with React and Redux', 4, 110000, '2025-03-01', '2025-11-30',
+        true, '2025-07-16', '2025-07-16');
 
 create table if not exists responded_applicants
 (

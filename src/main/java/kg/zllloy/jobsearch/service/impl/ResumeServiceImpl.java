@@ -1,21 +1,18 @@
 package kg.zllloy.jobsearch.service.impl;
 
 import kg.zllloy.jobsearch.dao.ResumeDao;
-import kg.zllloy.jobsearch.dto.JobDto;
+import kg.zllloy.jobsearch.dto.VacancyDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.model.Resumes;
 import kg.zllloy.jobsearch.service.ResumeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
-
-    public ResumeServiceImpl(ResumeDao resumeDao) {
-        this.resumeDao = resumeDao;
-    }
 
     public ResumeDto getResumeById(int resumeId) {
         return null;
@@ -31,7 +28,7 @@ public class ResumeServiceImpl implements ResumeService {
         return false;
     }
 
-    public List<JobDto> getAllResumes() {
+    public List<VacancyDto> getAllResumes() {
         return null;
     }
 
@@ -45,5 +42,10 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public List<ResumeDto> getResumesByCategory(int categoryId) {
         return resumeDao.getResumeByCategory(categoryId);
+    }
+
+    @Override
+    public List<ResumeDto> getResumesByApplicant(int applicantId) {
+        return resumeDao.getResumeByApplicant(applicantId);
     }
 }

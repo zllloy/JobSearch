@@ -11,7 +11,7 @@ public class ResumeDto {
     private String name;
     private int categoryId;
     private double salary;
-    private boolean isActive;
+    private boolean active;
     private Date createdDate;
-    private Date updatedDate;
+    private Date updateDate;
 }

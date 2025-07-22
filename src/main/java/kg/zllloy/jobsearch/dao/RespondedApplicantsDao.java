@@ -1,6 +1,8 @@
 package kg.zllloy.jobsearch.dao;
 
+import kg.zllloy.jobsearch.dao.mappers.RespondedApplicantsMapper;
 import kg.zllloy.jobsearch.dao.mappers.ResumeMapper;
+import kg.zllloy.jobsearch.dto.RespondedApplicantsDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,24 +14,15 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ResumeDao {
+public class RespondedApplicantsDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<ResumeDto> getResumeByCategory(int categoryId) {
-        String sql = "SELECT * FROM RESUMES WHERE CATEGORY_ID = :categoryId";
+    public List<RespondedApplicantsDto> getVacanciesByApplicant(int resumeId) {
+        String sql = "SELECT * FROM RESPONDED_APPLICANTS WHERE RESUME_ID = :resumeId";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("categoryId", categoryId);
+        params.addValue("resumeId", resumeId);
 
-        return namedParameterJdbcTemplate.query(sql, params, new ResumeMapper());
+        return namedParameterJdbcTemplate.query(sql, params, new RespondedApplicantsMapper());
     }
-
-    public List<ResumeDto> getResumeByApplicant(int applicantId) {
-        String sql = "SELECT * FROM RESUMES WHERE APPLICANT_ID = :applicantId";
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("applicantId", applicantId);
-
-        return namedParameterJdbcTemplate.query(sql, params, new ResumeMapper());
-    }
-
 }

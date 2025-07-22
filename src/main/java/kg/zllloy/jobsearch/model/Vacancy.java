@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Vacancies {
+public class Vacancy {
     private String name;
     private String description;
     private Integer categoryId;

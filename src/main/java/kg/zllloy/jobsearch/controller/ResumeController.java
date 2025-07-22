@@ -1,9 +1,8 @@
 package kg.zllloy.jobsearch.controller;
 
 import kg.zllloy.jobsearch.dto.ApplicantDto;
-import kg.zllloy.jobsearch.dto.JobDto;
+import kg.zllloy.jobsearch.dto.VacancyDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.model.Resumes;
 import kg.zllloy.jobsearch.service.ApplicantService;
 import kg.zllloy.jobsearch.service.JobService;
 import kg.zllloy.jobsearch.service.impl.ResumeServiceImpl;
@@ -24,7 +23,7 @@ public class ResumeController {
     private final JobService jobService;
 
     @GetMapping
-    public List<JobDto> getAllResumes() {
+    public List<VacancyDto> getAllResumes() {
         return resumeServiceImpl.getAllResumes();
     }
 
@@ -46,6 +45,15 @@ public class ResumeController {
 
         resumeServiceImpl.addResume(applicantId, resumeDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/applicant/{applicantId}")
+    public ResponseEntity<List<ResumeDto>> getApplicantById(@PathVariable int applicantId) {
+        List<ResumeDto> resumesByApplicant = resumeServiceImpl.getResumesByApplicant(applicantId);
+        if (resumesByApplicant == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resumesByApplicant);
     }
 
     @PutMapping("/edit/{resumeId}/applicant/{applicantId}")
