@@ -15,8 +15,9 @@ public class ResumeDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Resumes> getResumeOfCategory(int categoryId) {
+    public List<Resumes> getResumeByCategory(int categoryId) {
         String sql = "select * from categories where ID = :categoryId";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resumes.class));
     }
+
 }
