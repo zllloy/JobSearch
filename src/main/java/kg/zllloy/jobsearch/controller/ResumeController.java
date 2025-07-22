@@ -3,6 +3,7 @@ package kg.zllloy.jobsearch.controller;
 import kg.zllloy.jobsearch.dto.ApplicantDto;
 import kg.zllloy.jobsearch.dto.JobDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
+import kg.zllloy.jobsearch.model.Resumes;
 import kg.zllloy.jobsearch.service.ApplicantService;
 import kg.zllloy.jobsearch.service.JobService;
 import kg.zllloy.jobsearch.service.impl.ResumeServiceImpl;
@@ -29,7 +30,7 @@ public class ResumeController {
 
     @GetMapping("/category/{id}")
     public ResponseEntity<List<ResumeDto>> getResumeByCategory(@PathVariable int id) {
-        List<ResumeDto> resumes = (List<ResumeDto>) resumeServiceImpl.getResumeByCategory(id);
+        List<ResumeDto> resumes = resumeServiceImpl.getResumesByCategory(id);
         if (resumes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

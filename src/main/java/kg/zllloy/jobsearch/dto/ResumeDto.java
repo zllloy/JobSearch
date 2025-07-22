@@ -1,7 +1,17 @@
 package kg.zllloy.jobsearch.dto;
 
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
 public class ResumeDto {
-    public int getApplicantId() {
-        return 0;
-    }
+    private int id;
+    private int applicantId;
+    private String name;
+    private int categoryId;
+    private double salary;
+    private boolean isActive;
+    private Date createdDate;
+    private Date updatedDate;
 }

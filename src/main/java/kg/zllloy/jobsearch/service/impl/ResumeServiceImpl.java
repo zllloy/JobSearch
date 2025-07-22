@@ -31,7 +31,6 @@ public class ResumeServiceImpl implements ResumeService {
         return false;
     }
 
-
     public List<JobDto> getAllResumes() {
         return null;
     }
@@ -43,9 +42,8 @@ public class ResumeServiceImpl implements ResumeService {
     public void addResponse(int jobId, int resumeId) {
     }
 
-
     @Override
-    public List<Resumes> getResumesByCategory(int categoryId) {
+    public List<ResumeDto> getResumesByCategory(int categoryId) {
         return resumeDao.getResumeByCategory(categoryId);
     }
 }

@@ -1,5 +1,6 @@
 package kg.zllloy.jobsearch.dao;
 
+import kg.zllloy.jobsearch.dto.ResumeDto;
 import kg.zllloy.jobsearch.model.Resumes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -15,9 +16,9 @@ public class ResumeDao {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Resumes> getResumeByCategory(int categoryId) {
+    public List<ResumeDto> getResumeByCategory(int categoryId) {
         String sql = "select * from categories where ID = :categoryId";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Resumes.class));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ResumeDto.class));
     }
 
 }
