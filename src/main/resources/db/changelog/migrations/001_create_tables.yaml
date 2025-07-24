@@ -119,6 +119,7 @@
                     nullable: false
                     foreignKeyName: fk_resumes_applicant_id
                     references: users(id)
+                    deleteCascade: true
               - column:
                   name: name
                   type: text
@@ -179,6 +180,7 @@
                     nullable: false
                     foreignKeyName: fk_contacts_info_resume_id
                     references: resumes(id)
+                    deleteCascade: true
               - column:
                   name: value_info
                   type: text
@@ -242,6 +244,7 @@
                     nullable: false
                     foreignKeyName: fk_vacancies_author_id
                     references: users(id)
+                    deleteCascade: true
               - column:
                   name: created_date
                   type: timestamp
@@ -273,6 +276,7 @@
                     nullable: false
                     foreignKeyName: fk_responded_applicants_resume_id
                     references: resumes(id)
+                    deleteCascade: true
               - column:
                   name: vacancy_id
                   type: int
@@ -280,6 +284,7 @@
                     nullable: false
                     foreignKeyName: fk_responded_applicants_vacancy_id
                     references: vacancies(id)
+                    deleteCascade: true
               - column:
                   name: confirmation
                   type: boolean
@@ -306,6 +311,7 @@
                     nullable: false
                     foreignKeyName: fk_education_info_resume_id
                     references: resumes(id)
+                    deleteCascade: true
               - column:
                   name: institution
                   type: text
@@ -352,6 +358,7 @@
                     nullable: false
                     foreignKeyName: fk_work_experience_info_resume_id
                     references: resumes(id)
+                    deleteCascade: true
               - column:
                   name: years
                   type: int
@@ -393,6 +400,7 @@
                     nullable: false
                     foreignKeyName: fk_messages_responded_applicants
                     references: responded_applicants(id)
+                    deleteCascade: true
               - column:
                   name: content
                   type: text
@@ -417,6 +425,7 @@
                     nullable: false
                     foreignKeyName: fk_response_vacancy_id
                     references: vacancies(id)
+                    deleteCascade: true
               - column:
                   name: resume_id
                   type: int
@@ -424,6 +433,7 @@
                     nullable: false
                     foreignKeyName: fk_response_resume_id
                     references: resumes(id)
+                    deleteCascade: true
               - column:
                   name: responded_At
                   type: timestamp

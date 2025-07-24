@@ -17,7 +17,7 @@ public class ResumeMapper implements RowMapper<ResumeDto> {
         dto.setSalary(rs.getDouble("salary"));
         dto.setActive(rs.getBoolean("is_active"));
         dto.setCreatedDate(rs.getDate("created_date"));
-        dto.setUpdateDate(rs.getDate("update_date"));
+        dto.setUpdateTime(rs.getDate("update_time"));
         return dto;
     }
 }

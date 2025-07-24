@@ -1,10 +1,13 @@
 package kg.zllloy.jobsearch.dto;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
+@RequiredArgsConstructor
 public class ResumeDto {
     private int id;
     private int applicantId;
@@ -13,5 +16,7 @@ public class ResumeDto {
     private double salary;
     private boolean active;
     private Date createdDate;
-    private Date updateDate;
+    private Date updateTime;
+    private List<EducationDto> educations;
+    private List<WorkExperienceDto> workExperiences;
 }

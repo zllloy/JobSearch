@@ -15,17 +15,18 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeDao resumeDao;
 
     public ResumeDto getResumeById(int resumeId) {
-        return null;
+        return resumeDao.getResumeById(resumeId);
     }
 
     public void editResume(int resumeId, ResumeDto resumeDto) {
+        resumeDao.editResume(resumeId, resumeDto);
     }
 
     public void addResume(int applicantId, ResumeDto resumeDto) {
     }
 
-    public boolean deleteResume(int resumeId) {
-        return false;
+    public void deleteResume(int resumeId, int applicantId) {
+        resumeDao.deleteResume(resumeId, applicantId);
     }
 
     public List<VacancyDto> getAllResumes() {

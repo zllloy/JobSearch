@@ -30,18 +30,21 @@ public class ResumeController {
     @GetMapping("/category/{id}")
     public ResponseEntity<List<ResumeDto>> getResumeByCategory(@PathVariable int id) {
         List<ResumeDto> resumes = resumeServiceImpl.getResumesByCategory(id);
-        if (resumes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(resumes);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResumeDto> getResumeById(@PathVariable int id) {
+        ResumeDto resume = resumeServiceImpl.getResumeById(id);
+        return ResponseEntity.ok(resume);
     }
 
     @PostMapping("/create/{applicantId}")
     public ResponseEntity<Void> createResume(@PathVariable int applicantId, @RequestBody ResumeDto resumeDto) {
-        ApplicantDto applicant = applicantService.getApplicantById(applicantId);
-        if (applicant == null) {
-            return ResponseEntity.notFound().build();
-        }
+//        ApplicantDto applicant = applicantService.getApplicantById(applicantId);
+//        if (applicant == null) {
+//            return ResponseEntity.notFound().build();
+//        }
 
         resumeServiceImpl.addResume(applicantId, resumeDto);
         return ResponseEntity.ok().build();
@@ -71,32 +74,24 @@ public class ResumeController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{resumeId}/applicant/{applicantId}")
-    public ResponseEntity<Void> deleteResume(@PathVariable int resumeId,
-                                          @PathVariable int applicantId) {
-        ResumeDto existing = resumeServiceImpl.getResumeById(resumeId);
-        if (existing == null) {
-            return ResponseEntity.notFound().build();
-        }
-        if (existing.getApplicantId() != applicantId) {
-            return ResponseEntity.status(403).build();
-        }
+    @DeleteMapping("/{resumeId}/applicant/{applicantId}")
+    public ResponseEntity<Void> deleteResume(
+            @PathVariable int resumeId,
+            @PathVariable int applicantId) {
 
-        if(resumeServiceImpl.deleteResume(resumeId))
-            return ResponseEntity.noContent().build();
-
-        return ResponseEntity.notFound().build();
+        resumeServiceImpl.deleteResume(resumeId, applicantId);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/job/{jobId}/resume/{resumeId}")
-    public ResponseEntity<Void> respondToJob(@PathVariable int jobId,
+    @PostMapping("/vacancy/{vacancyId}/resume/{resumeId}")
+    public ResponseEntity<Void> respondToVacancy(@PathVariable int vacancyId,
                                              @PathVariable int resumeId) {
 
-        if (!jobService.existsById(jobId) || !resumeServiceImpl.existsById(resumeId)) {
+        if (!jobService.existsById(vacancyId) || !resumeServiceImpl.existsById(resumeId)) {
             return ResponseEntity.notFound().build();
         }
 
-        resumeServiceImpl.addResponse(jobId, resumeId);
+        resumeServiceImpl.addResponse(vacancyId, resumeId);
 
         return ResponseEntity.ok().build();
     }

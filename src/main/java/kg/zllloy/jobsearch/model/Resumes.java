@@ -13,5 +13,5 @@ public class Resumes {
     private Float salary;
     private Boolean isActive;
     private Date createdDate;
-    private Date updateDate;
+    private Date updateTime;
 }
