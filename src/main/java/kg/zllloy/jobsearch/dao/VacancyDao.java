@@ -21,6 +21,10 @@ public class VacancyDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(VacancyDto.class));
     }
 
+    public List<VacancyDto> getVacanciesByCategory(int categoryId) {
+        String sql = "SELECT * FROM vacancies WHERE category_id = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(VacancyDto.class), categoryId);
+    }
 
 //    public List<VacancyDto> getVacanciesByApplicant(int resumeId) {
 //        String sql = "SELECT * FROM RESPONDED_APPLICANTS WHERE RESUME_ID = :resumeId";

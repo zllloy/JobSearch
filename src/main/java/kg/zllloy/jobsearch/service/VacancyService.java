@@ -8,4 +8,6 @@ public interface VacancyService {
     public List<VacancyDto> getVacanciesByApplicant(int applicantId);
 
     public List<VacancyDto> getAllVacancies();
+
+    public List<VacancyDto> getVacanciesByCategory(int category);
 }

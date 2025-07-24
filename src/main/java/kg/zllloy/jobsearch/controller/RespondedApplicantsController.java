@@ -26,4 +26,10 @@ public class RespondedApplicantsController {
         }
         return ResponseEntity.ok(resumes);
     }
+
+    @GetMapping("/vacancy/{vacancyId}")
+    public ResponseEntity<List<RespondedApplicantsDto>> getRespondedApplicantsByVacancy(@PathVariable int vacancyId) {
+        List<RespondedApplicantsDto> applicants = respondedApplicantsServerImpl.getRespondedApplicantsByVacancyId(vacancyId);
+        return ResponseEntity.ok(applicants);
+    }
 }

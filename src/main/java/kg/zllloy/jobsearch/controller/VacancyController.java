@@ -29,6 +29,11 @@ public class VacancyController {
         return null;
     }
 
+    @GetMapping("/category/{categoryId}")
+    public List<VacancyDto> getVacanciesByCategory(@PathVariable int categoryId) {
+        return vacancyServiceImpl.getVacanciesByCategory(categoryId);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Void> addVacancy(VacancyDto vacancyDto) {
         return null;

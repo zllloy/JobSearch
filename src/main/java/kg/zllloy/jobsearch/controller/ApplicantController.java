@@ -1,7 +1,7 @@
 package kg.zllloy.jobsearch.controller;
 
 import kg.zllloy.jobsearch.dto.ApplicantDto;
-import kg.zllloy.jobsearch.service.ApplicantService;
+import kg.zllloy.jobsearch.service.impl.ApplicantServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,17 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/applicants")
 public class ApplicantController {
-    private final ApplicantService applicantService;
-
-    @GetMapping
-    public ResponseEntity<List<ApplicantDto>> getApplicants(@RequestParam(required = false) Integer jobId) {
-        if (jobId != null) {
-            List<ApplicantDto> applicants = applicantService.getApplicantsByJob(jobId);
-            return applicants.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(applicants);
-        }
-
-        return ResponseEntity.badRequest().build();
-    }
+    private final ApplicantServiceImpl applicantService;
 
     @GetMapping("/{applicantId}")
     public ResponseEntity<ApplicantDto> getApplicant(@PathVariable int applicantId) {

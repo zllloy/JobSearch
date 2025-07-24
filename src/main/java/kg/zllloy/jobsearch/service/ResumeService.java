@@ -9,3 +9,5 @@ public interface ResumeService {
 
     List<ResumeDto> getResumesByApplicant(int applicantId);
 }
+
+

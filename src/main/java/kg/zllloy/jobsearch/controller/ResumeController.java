@@ -3,7 +3,7 @@ package kg.zllloy.jobsearch.controller;
 import kg.zllloy.jobsearch.dto.ApplicantDto;
 import kg.zllloy.jobsearch.dto.VacancyDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.service.ApplicantService;
+import kg.zllloy.jobsearch.service.impl.ApplicantServiceImpl;
 import kg.zllloy.jobsearch.service.JobService;
 import kg.zllloy.jobsearch.service.impl.ResumeServiceImpl;
 import kg.zllloy.jobsearch.service.SummaryService;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/resume")
 public class ResumeController {
     private final ResumeServiceImpl resumeServiceImpl;
-    private final ApplicantService applicantService;
+    private final ApplicantServiceImpl applicantService;
     private final SummaryService summaryService;
     private final JobService jobService;
 

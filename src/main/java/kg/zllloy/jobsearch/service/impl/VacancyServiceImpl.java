@@ -22,4 +22,10 @@ public class VacancyServiceImpl implements VacancyService {
     public List<VacancyDto> getAllVacancies() {
         return vacancyDao.getAllVacancies();
     }
+
+    @Override
+    public List<VacancyDto> getVacanciesByCategory(int categoryId) {
+        return vacancyDao.getVacanciesByCategory(categoryId);
+    }
+
 }

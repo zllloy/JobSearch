@@ -25,4 +25,10 @@ public class RespondedApplicantsDao {
 
         return namedParameterJdbcTemplate.query(sql, params, new RespondedApplicantsMapper());
     }
+
+    public List<RespondedApplicantsDto> getRespondedApplicantsByVacancyId(int vacancyId) {
+        String sql = "SELECT * FROM RESPONDED_APPLICANTS WHERE VACANCY_ID  = ?";
+        return jdbcTemplate.query(sql, new RespondedApplicantsMapper(), vacancyId);
+    }
+
 }

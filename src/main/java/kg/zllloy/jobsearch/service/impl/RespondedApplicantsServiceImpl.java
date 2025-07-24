@@ -17,4 +17,9 @@ public class RespondedApplicantsServiceImpl implements RespondedApplicantsServic
     public List<RespondedApplicantsDto> getVacanciesByApplicant(int resumeId) {
         return respondedApplicantsDao.getVacanciesByApplicant(resumeId);
     }
+
+    @Override
+    public List<RespondedApplicantsDto> getRespondedApplicantsByVacancyId(int vacancyId) {
+        return respondedApplicantsDao.getRespondedApplicantsByVacancyId(vacancyId);
+    }
 }
