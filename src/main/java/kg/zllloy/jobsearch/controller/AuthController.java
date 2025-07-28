@@ -1,7 +1,6 @@
 package kg.zllloy.jobsearch.controller;
 
 import jakarta.validation.Valid;
-import kg.zllloy.jobsearch.dto.UserDto;
 import kg.zllloy.jobsearch.model.User;
 import kg.zllloy.jobsearch.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/create")
-    public User createUser(@RequestBody @Valid UserDto user) {
+    public User createUser(@RequestBody @Valid User user) {
         return userService.createUser(user);
     }
 }

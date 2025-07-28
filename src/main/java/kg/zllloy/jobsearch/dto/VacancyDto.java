@@ -25,13 +25,13 @@ public class VacancyDto {
     private Integer salary;
 
     @Size(max = 50, message = "Опыт работы (с) должен быть не длиннее 50 символов")
-    private String expForm;
+    private String expFrom;
 
     @Size(max = 50, message = "Опыт работы (по) должен быть не длиннее 50 символов")
     private String expTo;
 
     @NotNull(message = "Активность вакансии обязательна")
-    private Boolean isActive;
+    private Boolean active;
 
     @NotNull(message = "ID автора обязателен")
     @Min(value = 1, message = "ID автора не может быть меньше 1")
@@ -44,4 +44,5 @@ public class VacancyDto {
     @PastOrPresent(message = "Дата обновления не может быть в будущем")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedDate;
+
 }

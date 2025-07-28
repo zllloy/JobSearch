@@ -52,14 +52,14 @@ public class UserController {
     }
 
     @PostMapping
-    public HttpStatus createUser(@RequestBody UserDto userDto) {
+    public HttpStatus createUser(@RequestBody User userDto) {
         userService.createUser(userDto);
         return HttpStatus.OK;
     }
 
     @GetMapping("vacancy/{vacancyId}")
-    public ResponseEntity<List<User>> getApplicantsByVacancy(@PathVariable int vacancyId) {
-        List<User> applicants = userService.getApplicantsByVacancy(vacancyId);
+    public ResponseEntity<List<UserDto>> getApplicantsByVacancy(@PathVariable int vacancyId) {
+        List<UserDto> applicants = userService.getApplicantsByVacancy(vacancyId);
         if (applicants.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

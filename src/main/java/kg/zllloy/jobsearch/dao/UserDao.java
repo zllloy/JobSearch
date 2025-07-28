@@ -1,17 +1,13 @@
 package kg.zllloy.jobsearch.dao;
 
 import kg.zllloy.jobsearch.dao.mappers.UserMapper;
-import kg.zllloy.jobsearch.dto.UserDto;
 import kg.zllloy.jobsearch.model.User;
-import kg.zllloy.jobsearch.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +48,7 @@ public class UserDao {
         );
     }
 
-    public Optional<User> getUserById (int id) {
+    public Optional<User> getUserById(int id) {
         String sql = "SELECT * FROM users WHERE id = ?";
         return Optional.ofNullable(
                 DataAccessUtils.singleResult(
@@ -63,16 +59,46 @@ public class UserDao {
 
     public List<User> getApplicantsByVacancy(int vacancyId) {
         String sql = """
-        SELECT u.* 
-        FROM responded_applicants ra
-        JOIN resumes r ON ra.resume_id = r.id
-        JOIN users u ON r.applicant_id = u.id
-        WHERE ra.vacancy_id = ?
-    """;
+                    SELECT u.* 
+                    FROM responded_applicants ra
+                    JOIN resumes r ON ra.resume_id = r.id
+                    JOIN users u ON r.applicant_id = u.id
+                    WHERE ra.vacancy_id = ?
+                """;
 
         return jdbcTemplate.query(sql, new UserMapper(), vacancyId);
     }
 
 
+    public boolean existById(int applicantId) {
+        String sql = "SELECT COUNT(*) FROM users WHERE id = ?";
+        MapSqlParameterSource params = new MapSqlParameterSource();
 
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count == null || count <= 0;
+    }
+
+    public boolean existByName(String name) {
+        String sql = "SELECT COUNT(*) FROM users WHERE NAME ilike :name;";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("name", "%" + name + "%");
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count != null && count > 0;
+    }
+
+    public boolean existByPhone(String phone) {
+        String sql = "SELECT COUNT(*) FROM users WHERE phone_number = ?";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("phone", "%" + phone + "%");
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count != null && count > 0;
+    }
+
+    public boolean existByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("email", "%" + email + "%");
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count != null && count > 0;
+    }
 }

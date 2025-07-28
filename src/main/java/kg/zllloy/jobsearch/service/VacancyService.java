@@ -10,4 +10,5 @@ public interface VacancyService {
     public List<VacancyDto> getAllVacancies();
 
     public List<VacancyDto> getVacanciesByCategory(int category);
+
 }

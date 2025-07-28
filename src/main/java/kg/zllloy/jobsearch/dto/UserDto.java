@@ -23,14 +23,6 @@ public class UserDto {
     @Email(message = "Неверный формат email")
     private String email;
 
-    @NotBlank
-    @Size(min = 6, max = 20, message = ("Длина должна быть не меньше шести символов!"))
-    @Pattern(
-            regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$",
-            message = "Пароль должен содержать от 6 до 20 символов, хотя бы одну заглавную букву и одну цифру"
-    )
-    private String password;
-
     @Pattern(
             regexp = "^\\+?[0-9]{10,15}$",
             message = "Телефон должен содержать от 10 до 15 цифр и может начинаться с +"
@@ -45,4 +37,17 @@ public class UserDto {
             message = "Тип аккаунта должен быть соискатель или работодатель"
     )
     private String accountType;
+
+    public static UserDto toDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
+        userDto.setAge(user.getAge());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhoneNumber(user.getPhoneNumber());
+        userDto.setAvatar(user.getAvatar());
+        userDto.setAccountType(user.getAccountType());
+
+        return userDto;
+    }
 }

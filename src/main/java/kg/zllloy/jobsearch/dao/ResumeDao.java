@@ -1,13 +1,11 @@
 package kg.zllloy.jobsearch.dao;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import kg.zllloy.jobsearch.dao.mappers.ResumeMapper;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.exceptions.CategoryNotFoundException;
-import kg.zllloy.jobsearch.exceptions.ResumeNotFoundException;
-import kg.zllloy.jobsearch.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -15,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class ResumeDao {
-    private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<ResumeDto> getResumeByCategory(int categoryId) {
@@ -38,36 +36,29 @@ public class ResumeDao {
         return namedParameterJdbcTemplate.query(sql, params, new ResumeMapper());
     }
 
-    public ResumeDto getResumeById(int resumeId) {
+    public Optional<ResumeDto> getResumeById(int resumeId) {
         String sql = "SELECT * FROM RESUMES WHERE ID = :resumeId";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("resumeId", resumeId);
 
-        return namedParameterJdbcTemplate.queryForObject(sql, params, new ResumeMapper());
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        namedParameterJdbcTemplate.query(sql, params, new ResumeMapper())
+                )
+        );
     }
 
     @Transactional
     public void editResume(int resumeId, ResumeDto resumeDto) {
-        String sql = "SELECT COUNT(*) FROM resumes WHERE id = :resumeId";
-        Integer count = namedParameterJdbcTemplate.queryForObject(
-                sql,
-                new MapSqlParameterSource("resumeId", resumeId),
-                Integer.class
-        );
-
-        if (count == null || count == 0) {
-            throw new ResumeNotFoundException("Резюме с ID " + resumeId + " не найдено");
-        }
-
         String updateSql = """
-        UPDATE resumes 
-        SET name = :name,
-            category_id = :categoryId,
-            salary = :salary,
-            is_active = :isActive,
-            update_time = CURRENT_TIMESTAMP
-        WHERE id = :resumeId
-        """;
+                 UPDATE resumes\s
+                 SET name = :name,
+                     category_id = :categoryId,
+                     salary = :salary,
+                     is_active = :isActive,
+                     update_time = CURRENT_TIMESTAMP
+                 WHERE id = :resumeId
+                \s""";
 
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("resumeId", resumeId)
@@ -76,31 +67,16 @@ public class ResumeDao {
                 .addValue("salary", resumeDto.getSalary())
                 .addValue("isActive", resumeDto.isActive());
 
-        int updated = namedParameterJdbcTemplate.update(updateSql, params);
-
-        if (updated == 0) {
-            throw new RuntimeException("Не удалось обновить резюме");
-        }
+        namedParameterJdbcTemplate.update(updateSql, params);
     }
 
     @Transactional
     public void deleteResume(int resumeId, int applicantId) {
-        String sql = """
-            SELECT COUNT(*) FROM resumes 
-            WHERE id = :resumeId AND applicant_id = :applicantId
-            """;
 
         MapSqlParameterSource checkParams = new MapSqlParameterSource()
                 .addValue("resumeId", resumeId)
                 .addValue("applicantId", applicantId);
 
-        Integer count = namedParameterJdbcTemplate.queryForObject(
-                sql, checkParams, Integer.class);
-
-
-        if (count == null || count == 0) {
-            throw new ResumeNotFoundException("Резюме с таким id не найдено.");
-        }
 
         String deleteSql = "DELETE FROM resumes WHERE id = :resumeId";
         namedParameterJdbcTemplate.update(deleteSql, checkParams);
@@ -108,45 +84,23 @@ public class ResumeDao {
 
     @Transactional
     public void addResume(int applicantId, ResumeDto resumeDto) {
-        String checkUserSql = "SELECT COUNT(*) FROM users WHERE id = :applicantId";
-        Integer userCount = namedParameterJdbcTemplate.queryForObject(
-                checkUserSql,
-                new MapSqlParameterSource("applicantId", applicantId),
-                Integer.class
-        );
-
-        if (userCount == null || userCount == 0) {
-            throw new UserNotFoundException();
-        }
-
-        String checkCategorySql = "SELECT COUNT(*) FROM categories WHERE id = :categoryId";
-        Integer categoryCount = namedParameterJdbcTemplate.queryForObject(
-                checkCategorySql,
-                new MapSqlParameterSource("categoryId", resumeDto.getCategoryId()),
-                Integer.class
-        );
-
-        if (categoryCount == null || categoryCount == 0) {
-            throw new CategoryNotFoundException("Category not found with id: " + resumeDto.getCategoryId());
-        }
-
         String insertSql = """
-                INSERT INTO resumes (
-                    applicant_id, 
-                    name, 
-                    category_id, 
-                    salary, 
-                    is_active, 
-                    created_date
-                ) VALUES (
-                    :applicantId, 
-                    :name, 
-                    :categoryId, 
-                    :salary, 
-                    :isActive, 
-                    :createdDate
-                ) 
-                """;
+                 INSERT INTO resumes (
+                     applicant_id,\s
+                     name,\s
+                     category_id,\s
+                     salary,\s
+                     is_active,\s
+                     created_date
+                 ) VALUES (
+                     :applicantId,\s
+                     :name,\s
+                     :categoryId,\s
+                     :salary,\s
+                     :isActive,\s
+                     :createdDate
+                 )\s
+                \s""";
 
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("applicantId", applicantId)
@@ -156,11 +110,35 @@ public class ResumeDao {
                 .addValue("isActive", resumeDto.isActive())
                 .addValue("createdDate", LocalDateTime.now());
 
-        int affectedRows = namedParameterJdbcTemplate.update(insertSql, params);
-
-        if (affectedRows == 0) {
-            throw new DataAccessException("Не удалось создать резюме") {};
-        }
+        namedParameterJdbcTemplate.update(insertSql, params);
 
     }
+
+    public boolean isResumeBelongsToApplicant(
+            @NotNull(message = "resumeId не может быть null")
+            @Min(value = 1, message = "resumeId не может быть отрицательным или нулевым")
+            int resumeId,
+            @NotNull(message = "applicantId не может быть null")
+            @Min(value = 1, message = "applicantId не может быть отрицательным или нулевым")
+            Integer applicantId) {
+
+        String sql = "SELECT COUNT(*) FROM resumes WHERE id = :resumeId AND applicant_id = :applicantId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("resumeId", resumeId);
+        params.addValue("applicantId", applicantId);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count != null && count > 0;
+    }
+
+
+    public boolean existById(int resumeId) {
+        String sql = "SELECT COUNT(*) FROM RESUMES WHERE ID = :resumeId";
+        MapSqlParameterSource params = new MapSqlParameterSource("resumeId", resumeId);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, params, Integer.class);
+        return count == null || count <= 0;
+    }
+
 }

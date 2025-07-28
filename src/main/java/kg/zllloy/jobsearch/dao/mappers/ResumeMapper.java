@@ -10,7 +10,6 @@ public class ResumeMapper implements RowMapper<ResumeDto> {
     @Override
     public ResumeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
         ResumeDto dto = new ResumeDto();
-        dto.setId(rs.getInt("id"));
         dto.setApplicantId(rs.getInt("applicant_id"));
         dto.setName(rs.getString("name"));
         dto.setCategoryId(rs.getInt("category_id"));

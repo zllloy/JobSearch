@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -56,7 +57,7 @@ public class ResumeController {
     @PutMapping("/edit/{resumeId}/applicant/{applicantId}")
     public ResponseEntity<Void> editResume(@PathVariable int resumeId,
                                            @PathVariable int applicantId,
-                                           @RequestBody ResumeDto resumeDto) {
+                                           @RequestBody ResumeDto resumeDto) throws AccessDeniedException {
         ResumeDto existing = resumeServiceImpl.getResumeById(resumeId);
         if (existing == null) {
             return ResponseEntity.notFound().build();
@@ -77,18 +78,18 @@ public class ResumeController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/vacancy/{vacancyId}/resume/{resumeId}")
-    public ResponseEntity<Void> respondToVacancy(@PathVariable int vacancyId,
-                                             @PathVariable int resumeId) {
+//    @PostMapping("/vacancy/{vacancyId}/resume/{resumeId}")
+//    public ResponseEntity<Void> respondToVacancy(@PathVariable int vacancyId,
+//                                             @PathVariable int resumeId) {
+////
+////        if (!jobService.existsById(vacancyId) || !resumeServiceImpl.existsById(resumeId)) {
+////            return ResponseEntity.notFound().build();
+////        }
 //
-//        if (!jobService.existsById(vacancyId) || !resumeServiceImpl.existsById(resumeId)) {
-//            return ResponseEntity.notFound().build();
-//        }
-
-        resumeServiceImpl.addResponse(vacancyId, resumeId);
-
-        return ResponseEntity.ok().build();
-    }
+//        resumeServiceImpl.addResponse(vacancyId, resumeId);
+//
+//        return ResponseEntity.ok().build();
+//    }
 
 
 }
