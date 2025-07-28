@@ -23,6 +23,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     public void addResume(int applicantId, ResumeDto resumeDto) {
+        resumeDao.addResume(applicantId, resumeDto);
     }
 
     public void deleteResume(int resumeId, int applicantId) {

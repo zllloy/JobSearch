@@ -1,12 +1,8 @@
 package kg.zllloy.jobsearch.controller;
 
-import kg.zllloy.jobsearch.dto.ApplicantDto;
 import kg.zllloy.jobsearch.dto.VacancyDto;
 import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.service.impl.ApplicantServiceImpl;
-import kg.zllloy.jobsearch.service.JobService;
 import kg.zllloy.jobsearch.service.impl.ResumeServiceImpl;
-import kg.zllloy.jobsearch.service.SummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +14,7 @@ import java.util.List;
 @RequestMapping("/resume")
 public class ResumeController {
     private final ResumeServiceImpl resumeServiceImpl;
-    private final ApplicantServiceImpl applicantService;
-    private final SummaryService summaryService;
-    private final JobService jobService;
+
 
     @GetMapping
     public List<VacancyDto> getAllResumes() {
@@ -86,10 +80,10 @@ public class ResumeController {
     @PostMapping("/vacancy/{vacancyId}/resume/{resumeId}")
     public ResponseEntity<Void> respondToVacancy(@PathVariable int vacancyId,
                                              @PathVariable int resumeId) {
-
-        if (!jobService.existsById(vacancyId) || !resumeServiceImpl.existsById(resumeId)) {
-            return ResponseEntity.notFound().build();
-        }
+//
+//        if (!jobService.existsById(vacancyId) || !resumeServiceImpl.existsById(resumeId)) {
+//            return ResponseEntity.notFound().build();
+//        }
 
         resumeServiceImpl.addResponse(vacancyId, resumeId);
 

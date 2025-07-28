@@ -1,16 +1,16 @@
 package kg.zllloy.jobsearch.dao.mappers;
 
-import kg.zllloy.jobsearch.dto.RespondedApplicantsDto;
+import kg.zllloy.jobsearch.dto.RespondedUserDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RespondedApplicantsMapper implements RowMapper<RespondedApplicantsDto> {
+public class RespondedUserMapper implements RowMapper<RespondedUserDto> {
 
     @Override
-    public RespondedApplicantsDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        RespondedApplicantsDto dto = new RespondedApplicantsDto();
+    public RespondedUserDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        RespondedUserDto dto = new RespondedUserDto();
         dto.setId(rs.getInt("id"));
         dto.setResumeId(rs.getInt("resume_id"));
         dto.setVacancyId(rs.getInt("vacancy_id"));

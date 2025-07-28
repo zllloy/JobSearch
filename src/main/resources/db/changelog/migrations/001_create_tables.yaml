@@ -411,31 +411,3 @@
                   type: timestamp
                   constraints:
                     nullable: false
-  - changeSet:
-      id: create-response-table
-      author: zllloy
-      changes:
-        - createTable:
-            tableName: response
-            columns:
-              - column:
-                  name: vacancy_id
-                  type: int
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_response_vacancy_id
-                    references: vacancies(id)
-                    deleteCascade: true
-              - column:
-                  name: resume_id
-                  type: int
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_response_resume_id
-                    references: resumes(id)
-                    deleteCascade: true
-              - column:
-                  name: responded_At
-                  type: timestamp
-                  constraints:
-                    nullable: false

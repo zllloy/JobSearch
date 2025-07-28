@@ -1,8 +1,7 @@
 package kg.zllloy.jobsearch.controller;
 
-import kg.zllloy.jobsearch.dto.RespondedApplicantsDto;
-import kg.zllloy.jobsearch.dto.ResumeDto;
-import kg.zllloy.jobsearch.service.impl.RespondedApplicantsServiceImpl;
+import kg.zllloy.jobsearch.dto.RespondedUserDto;
+import kg.zllloy.jobsearch.service.impl.RespondedUserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/respondedApplicant")
 @RequiredArgsConstructor
-public class RespondedApplicantsController {
-    private final RespondedApplicantsServiceImpl respondedApplicantsServerImpl;
+public class RespondedUserController {
+    private final RespondedUserServiceImpl respondedApplicantsServerImpl;
 
     @GetMapping("/vacancies/{id}")
-    public ResponseEntity<List<RespondedApplicantsDto>> getVacanciesByApplicant(@PathVariable int id) {
-        List<RespondedApplicantsDto> resumes = respondedApplicantsServerImpl.getVacanciesByApplicant(id);
+    public ResponseEntity<List<RespondedUserDto>> getVacanciesByApplicant(@PathVariable int id) {
+        List<RespondedUserDto> resumes = respondedApplicantsServerImpl.getVacanciesByApplicant(id);
         if (resumes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -28,8 +27,8 @@ public class RespondedApplicantsController {
     }
 
     @GetMapping("/vacancy/{vacancyId}")
-    public ResponseEntity<List<RespondedApplicantsDto>> getRespondedApplicantsByVacancy(@PathVariable int vacancyId) {
-        List<RespondedApplicantsDto> applicants = respondedApplicantsServerImpl.getRespondedApplicantsByVacancyId(vacancyId);
+    public ResponseEntity<List<RespondedUserDto>> getRespondedApplicantsByVacancy(@PathVariable int vacancyId) {
+        List<RespondedUserDto> applicants = respondedApplicantsServerImpl.getRespondedApplicantsByVacancyId(vacancyId);
         return ResponseEntity.ok(applicants);
     }
 }

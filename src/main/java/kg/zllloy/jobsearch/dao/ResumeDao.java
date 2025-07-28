@@ -2,14 +2,18 @@ package kg.zllloy.jobsearch.dao;
 
 import kg.zllloy.jobsearch.dao.mappers.ResumeMapper;
 import kg.zllloy.jobsearch.dto.ResumeDto;
+import kg.zllloy.jobsearch.exceptions.CategoryNotFoundException;
 import kg.zllloy.jobsearch.exceptions.ResumeNotFoundException;
+import kg.zllloy.jobsearch.exceptions.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -100,5 +104,63 @@ public class ResumeDao {
 
         String deleteSql = "DELETE FROM resumes WHERE id = :resumeId";
         namedParameterJdbcTemplate.update(deleteSql, checkParams);
+    }
+
+    @Transactional
+    public void addResume(int applicantId, ResumeDto resumeDto) {
+        String checkUserSql = "SELECT COUNT(*) FROM users WHERE id = :applicantId";
+        Integer userCount = namedParameterJdbcTemplate.queryForObject(
+                checkUserSql,
+                new MapSqlParameterSource("applicantId", applicantId),
+                Integer.class
+        );
+
+        if (userCount == null || userCount == 0) {
+            throw new UserNotFoundException();
+        }
+
+        String checkCategorySql = "SELECT COUNT(*) FROM categories WHERE id = :categoryId";
+        Integer categoryCount = namedParameterJdbcTemplate.queryForObject(
+                checkCategorySql,
+                new MapSqlParameterSource("categoryId", resumeDto.getCategoryId()),
+                Integer.class
+        );
+
+        if (categoryCount == null || categoryCount == 0) {
+            throw new CategoryNotFoundException("Category not found with id: " + resumeDto.getCategoryId());
+        }
+
+        String insertSql = """
+                INSERT INTO resumes (
+                    applicant_id, 
+                    name, 
+                    category_id, 
+                    salary, 
+                    is_active, 
+                    created_date
+                ) VALUES (
+                    :applicantId, 
+                    :name, 
+                    :categoryId, 
+                    :salary, 
+                    :isActive, 
+                    :createdDate
+                ) 
+                """;
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("applicantId", applicantId)
+                .addValue("name", resumeDto.getName())
+                .addValue("categoryId", resumeDto.getCategoryId())
+                .addValue("salary", resumeDto.getSalary())
+                .addValue("isActive", resumeDto.isActive())
+                .addValue("createdDate", LocalDateTime.now());
+
+        int affectedRows = namedParameterJdbcTemplate.update(insertSql, params);
+
+        if (affectedRows == 0) {
+            throw new DataAccessException("Не удалось создать резюме") {};
+        }
+
     }
 }

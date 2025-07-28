@@ -1,15 +1,14 @@
 package kg.zllloy.jobsearch.controller;
 
+import kg.zllloy.jobsearch.dao.UserDao;
+import kg.zllloy.jobsearch.dto.UserDto;
 import kg.zllloy.jobsearch.exceptions.UserNotFoundException;
 import kg.zllloy.jobsearch.model.User;
 import kg.zllloy.jobsearch.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
+    private final UserDao userDao;
 
     @GetMapping
     public List<User> getUsers() {
@@ -45,4 +45,25 @@ public class UserController {
             return ResponseEntity.internalServerError().body("Произошла внутренняя ошибка сервера");
         }
     }
+
+    private User getUserById(int id) {
+        return userDao.getUserById(id)
+        .orElseThrow(UserNotFoundException::new);
+    }
+
+    @PostMapping
+    public HttpStatus createUser(@RequestBody UserDto userDto) {
+        userService.createUser(userDto);
+        return HttpStatus.OK;
+    }
+
+    @GetMapping("vacancy/{vacancyId}")
+    public ResponseEntity<List<User>> getApplicantsByVacancy(@PathVariable int vacancyId) {
+        List<User> applicants = userService.getApplicantsByVacancy(vacancyId);
+        if (applicants.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(applicants);
+    }
+
 }

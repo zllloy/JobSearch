@@ -8,6 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class ImageDto {
     private MultipartFile file;
-    private long movieId;
-
+    private long userId;
 }
